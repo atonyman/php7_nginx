@@ -181,20 +181,10 @@ RUN chmod +rwx /var/www \
     # Install Composer
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer 
 
-# Setup npm && composer, this should be done in a new dockerfile as well setting up laravel.
-# RUN npm install -g npm@latest \
-#     && npm install \
-#     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-#     && composer install --working-dir="/var/www"  --no-interaction \
-#     # admin generator
-#     && composer require "brackets/craftable-installer" \
-#     # start horizon schedule superivsor
-#     && php artisan horizon:install 
-#     # run the initial database migrations. -- can't until database is available, comment out.
-#     # && php artisan migrate 
-
 
 EXPOSE $EXPOSED_PORT
-# This image is a base, don't run unless you've uncommented above with desired installs for the laravel project
+# This image is a base, don't run unless you've uncommented below with desired installs for the laravel or php project
+# the example script is included
+
 # CMD [ "sh", "./deploy/laravel/run_services_based_on_container_role.sh" ]
 

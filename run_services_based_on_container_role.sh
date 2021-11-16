@@ -8,6 +8,16 @@ echo 'export PATH="$PATH:/var/www/vendor/bin"' >> ~/.bashrc
 
 case $CONTAINER_ROLE in
 	laravel)
+		# Lookf for flag to rebuild composer
+		if [ "$REBUILD" = "1" ]
+		then
+			rm -rf /var/www/vendor
+			rm /var/www/composer.lock
+			composer install --working-dir="/var/www"  --no-interaction
+			npm clean-install
+			php artisan horizon:install
+			php artisan craftable:install
+		fi
 		# run migrations if present
 		php artisan migrate
 		# Start npm, php-fpm and nginx
@@ -21,6 +31,7 @@ case $CONTAINER_ROLE in
 		;;
 	cron)
 		# env -o posix -c 'export -p' > /etc/cron.d/project_env.sh && chmod +x /etc/cron.d/project_env.sh && crontab /etc/cron.d/artisan-schedule-run && cron && tail -f > /dev/stdout
+		# put the above in the docker-compose command override for this container, needd to escape differently in this .sh and is broken.
 		echo "hello from cron"
 		break
 		;;
